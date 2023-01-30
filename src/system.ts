@@ -1,3 +1,5 @@
+import { DateFormatter } from "./lib/format";
+
 // This describes one Year within the Period (Each year within a period can have a different amount of days)
 export type YearInPeriodSystemDescriptor = {
   monthDurations: number[];
@@ -61,7 +63,6 @@ export class CalendarDate {
   }
 
   deconstruct(system: CalendarSystem): CalendarDateParts {
-    console.log(this.date, "in", system);
     const period = Math.floor(this.date / system.daysInPeriod);
     const dayInPeriod = this.date % system.daysInPeriod;
     let yearInPeriod = 0;
@@ -103,5 +104,31 @@ export class CalendarDate {
   startOfMonth(system: CalendarSystem): CalendarDate {
     const date = this.deconstruct(system);
     return system.fromDMY(0, date.month, date.year);
+  }
+
+  addMonths(system: CalendarSystem, months: number): CalendarDate {
+    const date = this.deconstruct(system);
+
+    let newMonth = date.month + months;
+
+    const yearDelta = Math.floor(
+      newMonth / system.descriptor.monthNames.length
+    );
+
+    console.log(newMonth, yearDelta);
+
+    if (newMonth < 0) {
+      newMonth += system.descriptor.monthNames.length;
+    }
+
+    return system.fromDMY(
+      date.dayOfMonth,
+      newMonth % system.descriptor.monthNames.length,
+      date.year + yearDelta
+    );
+  }
+
+  format(system: CalendarSystem, formatter: DateFormatter): string {
+    return formatter(this, system);
   }
 }

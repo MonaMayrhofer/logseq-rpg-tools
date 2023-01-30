@@ -1,6 +1,77 @@
 import React, { useMemo } from "react";
 import { FunctionComponent } from "react";
+import { LongFormat } from "../lib/format";
 import { CalendarDate, CalendarSystem } from "../system";
+
+function buildCalendarGrid(system: CalendarSystem, date: CalendarDate) {
+  const weekLength = system.descriptor.dayNames.length;
+  const startOfMonth = date.startOfMonth(system);
+  const startOfMonthWeekday = startOfMonth.weekDay(system);
+  const dateDetails = date.deconstruct(system);
+  const period = system.descriptor.period.years[dateDetails.yearInPeriod];
+  const monthDays = period.monthDurations[dateDetails.month];
+
+  const rows = [];
+  //First row;
+  const firstRow = [];
+  for (let d = 0; d < weekLength; d++) {
+    if (d < startOfMonthWeekday) {
+      firstRow.push({
+        outside: true,
+      });
+    } else {
+      const dayOfMonth = d - startOfMonthWeekday;
+      firstRow.push({
+        dayOfMonth,
+        date: startOfMonth.addDays(dayOfMonth),
+        outside: false,
+      });
+    }
+  }
+  rows.push(firstRow);
+
+  const daysLeft = monthDays - (weekLength - startOfMonthWeekday);
+  const weeks = Math.floor(daysLeft / weekLength);
+
+  //Medium rows:
+  for (let w = 0; w < weeks; w++) {
+    const row = [];
+    for (let d = 0; d < weekLength; d++) {
+      const dayOfMonth =
+        w * weekLength + d + (weekLength - startOfMonthWeekday);
+      row.push({
+        dayOfMonth,
+        date: startOfMonth.addDays(dayOfMonth),
+        outside: false,
+      });
+    }
+    rows.push(row);
+  }
+
+  //Last row
+  const lastWeekDays = daysLeft % weekLength;
+  if (lastWeekDays != 0) {
+    const lastRow = [];
+    for (let d = 0; d < weekLength; d++) {
+      if (d < lastWeekDays) {
+        const dayOfMonth =
+          weekLength * weeks + d + (weekLength - startOfMonthWeekday);
+        lastRow.push({
+          dayOfMonth,
+          date: startOfMonth.addDays(dayOfMonth),
+          outside: false,
+        });
+      } else {
+        lastRow.push({
+          outside: true,
+        });
+      }
+    }
+    rows.push(lastRow);
+  }
+
+  return rows;
+}
 
 export type CalendarDisplayProps = {
   system: CalendarSystem;
@@ -13,94 +84,48 @@ export const CalendarDisplay: FunctionComponent<CalendarDisplayProps> = ({
   date,
   onDateChange,
 }) => {
-  const dateDetails = useMemo(() => date.deconstruct(system), [date, system]);
-
-  const monthDays =
-    system.descriptor.period.years[dateDetails.yearInPeriod].monthDurations[
-      dateDetails.month
-    ];
-
   const weekday = date.weekDay(system);
 
-  const startOfMonthWeekday = useMemo(
-    () => date.startOfMonth(system).weekDay(system),
-    [system, date]
-  );
-
-  const weekLength = system.descriptor.dayNames.length;
-  const cells = useMemo(() => {
-    const rows = [];
-    //First row;
-    const firstRow = [];
-    for (let d = 0; d < weekLength; d++) {
-      if (d < startOfMonthWeekday) {
-        firstRow.push("O");
-      } else {
-        firstRow.push({
-          dayOfMonth: d - startOfMonthWeekday,
-        });
-      }
-    }
-    rows.push(firstRow);
-
-    const daysLeft = monthDays - (weekLength - startOfMonthWeekday);
-    const weeks = Math.floor(daysLeft / weekLength);
-
-    //Medium rows:
-    for (let w = 0; w < weeks; w++) {
-      const row = [];
-      for (let d = 0; d < weekLength; d++) {
-        row.push({
-          dayOfMonth: w * weekLength + d + (weekLength - startOfMonthWeekday),
-        });
-      }
-      rows.push(row);
-    }
-
-    //Last row
-    const lastWeekDays = daysLeft % weekLength;
-    const lastRow = [];
-    for (let d = 0; d < weekLength; d++) {
-      if (d < lastWeekDays) {
-        lastRow.push({
-          dayOfMonth:
-            weekLength * weeks + d + (weekLength - startOfMonthWeekday),
-        });
-      } else {
-        lastRow.push("O");
-      }
-    }
-    rows.push(lastRow);
-
-    return rows;
-  }, [monthDays, startOfMonthWeekday, weekLength]);
-
-  console.log(cells);
+  const cells = useMemo(() => buildCalendarGrid(system, date), [system, date]);
 
   return (
-    <div className="flex flex-col text-white bg-slate-700">
-      <div>{date.date}</div>
-      <div>{startOfMonthWeekday}</div>
-      <div>
-        {dateDetails.dayOfMonth}.{dateDetails.month}.{dateDetails.year} -{" "}
-        {weekday}
-      </div>
-      <button onClick={() => onDateChange(date.addDays(1))}>+</button>
-      <button onClick={() => onDateChange(date.addDays(-1))}>-</button>
+    <div className="flex flex-col text-black bg-slate-200">
+      <div className="flex flex-row mx-auto">
+        <button
+          onClick={() => onDateChange(date.addMonths(system, -1))}
+          className="p-2 px-6"
+        >
+          -
+        </button>
 
-      <div className="flex flex-row">
+        <div className="w-48 p-2 text-center">
+          {date.format(system, LongFormat)}
+        </div>
+
+        <button
+          onClick={() => onDateChange(date.addMonths(system, 1))}
+          className="p-2 px-6"
+        >
+          +
+        </button>
+      </div>
+
+      <div className="flex flex-row border-b border-gray-500">
         {system.descriptor.dayNames.map((name) => (
-          <div key={name} className="">
+          <div key={name} className="text-center grow">
             {name}
           </div>
         ))}
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col border-l border-gray-500">
         {cells.map((row, index) => (
-          <div key={index} className="flex flex-row">
+          <div key={index} className="flex flex-row border-b border-gray-500">
             {row.map((day, index) => (
-              <div key={index} className="flex-grow">
-                {JSON.stringify(day)}
+              <div
+                key={index}
+                className="flex flex-col items-center p-2 border-r border-gray-500 grow shrink-1 basis-0"
+              >
+                {day.outside ? <div></div> : <span>{day.dayOfMonth}</span>}
               </div>
             ))}
           </div>
