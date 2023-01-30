@@ -3,10 +3,11 @@ import "@logseq/libs";
 import React from "react";
 import * as ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css";
+// import "./index.css";
 
 import { logseq as PL } from "../package.json";
 import { InlineCalendarView } from "./components/macros/InlineCalendarView";
+import LsStyle from "./ls-style.css?inline";
 
 // @ts-expect-error
 const css = (t, ...args) => String.raw(t, ...args);
@@ -38,6 +39,7 @@ function main() {
   const openIconName = "template-plugin-open";
 
   logseq.provideStyle(css`
+    ${LsStyle}
     .${openIconName} {
       opacity: 0.55;
       font-size: 20px;

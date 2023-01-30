@@ -8,7 +8,7 @@
     "preinstall": "npx only-allow pnpm",
     "storybook": "concurrently \"npm run watch:*\"",
     "build-storybook": "build-storybook",
-    "watch:css": "npx tailwindcss -i ./src/index.css -o ./dist/index.css --watch",
+    "watch:css": "npx tailwindcss -i ./src/index.css -o ./dist/tailwindcss.css --watch",
     "watch:storybook": "start-storybook dev -p 6006 --disable-telemetry"
   },
   "license": "BSD 3-Clause",

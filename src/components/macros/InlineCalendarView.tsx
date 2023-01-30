@@ -10,10 +10,12 @@ export const InlineCalendarView: FunctionComponent<InlineCalendarViewProps> =
     const [date, setDate] = useState(new CalendarDate(0));
 
     return (
-      <CalendarDisplay
-        date={date}
-        onDateChange={(d) => setDate(d)}
-        system={TMP_SYSTEM}
-      ></CalendarDisplay>
+      <div className="rpg-calendar--inline-container">
+        <CalendarDisplay
+          date={date}
+          onDateChange={(d) => setDate(d)}
+          system={TMP_SYSTEM}
+        ></CalendarDisplay>
+      </div>
     );
   };

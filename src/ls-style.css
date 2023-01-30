@@ -1,0 +1,34 @@
+:root {
+  --rpg-inline-background-color: var(--ls-secondary-background-color);
+}
+
+.rpg-calendar--inline-container {
+  background-color: var(--rpg-inline-background-color);
+}
+
+.rpg-calendar--content-body {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid;
+  border-color: blueviolet;
+}
+.rpg-calendar--content-row {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solidk;
+  border-color: blueviolet;
+}
+.rpg-calendar--day {
+  flex: 1 1 0px;
+  display: flex;
+  flex-direction: column;
+  padding: 0.24em;
+  border-bottom: 1px solid;
+  border-color: blueviolet;
+}
+.rpg-calendar--day-row {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid;
+  border-color: blueviolet;
+}

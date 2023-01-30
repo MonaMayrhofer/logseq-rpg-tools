@@ -89,41 +89,50 @@ export const CalendarDisplay: FunctionComponent<CalendarDisplayProps> = ({
   const cells = useMemo(() => buildCalendarGrid(system, date), [system, date]);
 
   return (
-    <div className="flex flex-col text-black bg-slate-200">
-      <div className="flex flex-row mx-auto">
+    <div className="">
+      <div className="">
         <button
           onClick={() => onDateChange(date.addMonths(system, -1))}
-          className="p-2 px-6"
+          className=""
         >
           -
         </button>
 
-        <div className="w-48 p-2 text-center">
-          {date.format(system, LongFormat)}
-        </div>
+        <div className="">{date.format(system, LongFormat)}</div>
 
         <button
           onClick={() => onDateChange(date.addMonths(system, 1))}
-          className="p-2 px-6"
+          className=""
         >
           +
         </button>
       </div>
 
-      <div className="flex flex-row border-b border-gray-500">
+      <div
+        // className="flex flex-row border-b border-gray-500"
+        className="rpg-calendar--day-row"
+      >
         {system.descriptor.dayNames.map((name) => (
-          <div key={name} className="text-center grow">
+          <div key={name} className="">
             {name}
           </div>
         ))}
       </div>
-      <div className="flex flex-col border-l border-gray-500">
+      <div
+        // className="flex flex-col border-l border-gray-500"
+        className="rpg-calendar--content-body"
+      >
         {cells.map((row, index) => (
-          <div key={index} className="flex flex-row border-b border-gray-500">
+          <div
+            key={index}
+            // className="flex flex-row border-b border-gray-500"
+            className="rpg-calendar--content-row"
+          >
             {row.map((day, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center p-2 border-r border-gray-500 grow shrink-1 basis-0"
+                // className="flex flex-col items-center p-2 border-r border-gray-500 grow shrink-1 basis-0"
+                className="rpg-calendar--day"
               >
                 {day.outside ? <div></div> : <span>{day.dayOfMonth}</span>}
               </div>
