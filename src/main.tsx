@@ -13,7 +13,6 @@ const css = (t, ...args) => String.raw(t, ...args);
 const pluginId = PL.id;
 
 function main() {
-  console.info(`#${pluginId}: MAIN`);
   const root = ReactDOM.createRoot(document.getElementById("app")!);
 
   root.render(
@@ -48,6 +47,8 @@ function main() {
       opacity: 0.9;
     }
   `);
+
+  logseq.App.registerPageMenuItej
 
   logseq.App.registerUIItem("toolbar", {
     key: openIconName,

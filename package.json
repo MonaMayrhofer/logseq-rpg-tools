@@ -1,23 +1,35 @@
 {
-  "name": "logseq-plugin-template-react",
+  "name": "logseq-plugin-rpg-tools",
   "version": "0.0.0",
   "main": "dist/index.html",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "storybook": "concurrently \"npm run watch:*\"",
+    "build-storybook": "build-storybook",
+    "watch:css": "npx tailwindcss -i ./src/index.css -o ./public/index.css --watch",
+    "watch:storybook": "start-storybook dev -p 6006 --disable-telemetry"
   },
-  "license": "MIT",
+  "license": "BSD 3-Clause",
   "dependencies": {
     "@logseq/libs": "^0.0.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
     "@semantic-release/changelog": "6.0.2",
     "@semantic-release/exec": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@semantic-release/npm": "9.0.2",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-vite": "^0.3.0",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
@@ -25,6 +37,8 @@
     "@typescript-eslint/parser": "5.49.0",
     "@vitejs/plugin-react": "3.0.1",
     "autoprefixer": "10.4.13",
+    "babel-loader": "^8.3.0",
+    "concurrently": "^7.6.0",
     "conventional-changelog-conventionalcommits": "5.0.0",
     "eslint": "8.33.0",
     "eslint-plugin-react": "7.32.2",
@@ -37,7 +51,6 @@
     "vite-plugin-logseq": "1.1.2"
   },
   "logseq": {
-    "id": "_pengx17-logseq-template-react",
-    "icon": "./logo.svg"
+    "id": "_nionidh-logseq-plugin-rpg-tools"
   }
 }
