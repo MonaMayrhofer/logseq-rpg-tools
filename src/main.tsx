@@ -8,6 +8,9 @@ import App from "./App";
 import { logseq as PL } from "../package.json";
 import { InlineCalendarView } from "./components/macros/InlineCalendarView";
 import LsStyle from "./ls-style.css?inline";
+import { CalendarDate } from "./system";
+import { TMP_SYSTEM } from "./tmpSystem";
+import { LongFormat } from "./lib/format";
 
 // @ts-expect-error
 const css = (t, ...args) => String.raw(t, ...args);
@@ -51,8 +54,6 @@ function main() {
     }
   `);
 
-  logseq.App.registerPageMenuItej;
-
   logseq.App.registerUIItem("toolbar", {
     key: openIconName,
     template: `
@@ -61,31 +62,68 @@ function main() {
   });
 
   logseq.App.onMacroRendererSlotted(({ slot, payload }) => {
-    const [type, text, color] = payload.arguments;
+    const [type, ...args] = payload.arguments;
 
-    if (type !== "rpg-calendar") return;
+    // if (type !== "rpg-calendar") return;
 
-    const id = `rpg-calendar-view-${slot}`;
+    if (type === "rpg-calendar") {
+      const id = `rpg-calendar-view-${slot}`;
 
-    logseq.provideUI({
-      key: `rpg-calendar-${slot}`,
-      slot,
-      reset: true,
-      template: `<div id="${id}"></div>`,
-    });
+      logseq.provideUI({
+        key: `rpg-calendar-${slot}`,
+        slot,
+        reset: true,
+        template: `<div id="${id}"></div>`,
+      });
 
-    setTimeout(() => {
-      const element = parent.document.getElementById(id);
-      if (element !== null) {
-        const root = ReactDOM.createRoot(element);
-        root.render(<InlineCalendarView></InlineCalendarView>);
-      } else {
-        logseq.UI.showMsg(
-          "Couldn't embed RPG Calendar InlineCalendarView",
-          "error"
-        );
-      }
-    }, 0);
+      // await logseq.DB.datascriptQuery(
+      //
+      // jio
+      //   `
+      //       [:find (pull ?p [*])
+      //        :where
+      //        [?b :block/page ?p]
+      //        [?p :block/journal? true]
+      //        [?p :block/journal-day ?d]
+      //        [(>= ?d ${my}01)] [(<= ?d ${my}31)]]
+      //     `
+      // ).then((it) => console.log(it));
+
+      setTimeout(() => {
+        const element = parent.document.getElementById(id);
+
+        if (element !== null) {
+          const root = ReactDOM.createRoot(element);
+          root.render(<InlineCalendarView></InlineCalendarView>);
+        } else {
+          logseq.UI.showMsg(
+            "Couldn't embed RPG Calendar InlineCalendarView",
+            "error"
+          );
+        }
+      }, 0);
+    } else if (type === "rpg-date") {
+      const id = `rpg-date-view-${slot}`;
+
+      console.log("PAYLOAD: ", payload);
+
+      const [dateNum] = args;
+
+      const formatted = new CalendarDate(parseInt(dateNum)).format(
+        TMP_SYSTEM,
+        LongFormat
+      );
+
+      logseq.provideUI({
+        key: `rpg-calendar-${slot}`,
+        slot,
+        reset: true,
+        template: `<div class="rpg-calendar--date-view" id="${id}">${formatted}</div>`,
+      });
+      return;
+    } else {
+      return;
+    }
   });
 }
 

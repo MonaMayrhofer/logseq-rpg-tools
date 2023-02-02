@@ -4,31 +4,71 @@
 
 .rpg-calendar--inline-container {
   background-color: var(--rpg-inline-background-color);
+  border-radius: 12px;
+  width: 600px;
 }
 
+.rpg-calendar--container {
+  display: flex;
+  flex-direction: column;
+}
 .rpg-calendar--content-body {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid;
-  border-color: blueviolet;
 }
-.rpg-calendar--content-row {
+
+.rpg-calendar--navigator {
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solidk;
-  border-color: blueviolet;
+}
+.rpg-calendar--navigator > button {
+  padding: 4px 24px 4px 24px;
+}
+.rpg-calendar--navigator > h1 {
+  min-width: 250px;
+  text-align: center;
+  padding: 4px;
+  font-size: 1em;
+  flex-grow: 1;
+}
+
+.rpg-calendar--day-header-row {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid;
+}
+.rpg-calendar--day-header {
+  flex: 1 1 0px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 0.24em;
 }
 .rpg-calendar--day {
   flex: 1 1 0px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 0.24em;
-  border-bottom: 1px solid;
-  border-color: blueviolet;
+  border-right: 1px solid;
+}
+.rpg-calendar--day:last-of-type {
+  border-right: none;
 }
 .rpg-calendar--day-row {
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid;
-  border-color: blueviolet;
+}
+.rpg-calendar--day-row:last-of-type {
+  border-bottom: none;
+}
+
+.rpg-calendar--date-view {
+  display: inline-block;
+  background-color: var(--rpg-inline-background-color);
+  padding: 0 12px 0 12px;
+  vertical-align: middle;
+  line-height: 1.4em;
+  border-radius: 1em;
 }
