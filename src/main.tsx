@@ -2,7 +2,6 @@ import "@logseq/libs";
 
 import React from "react";
 import * as ReactDOM from "react-dom/client";
-import App from "./App";
 // import "./index.css";
 
 import { logseq as PL } from "../package.json";
@@ -19,14 +18,6 @@ const css = (t, ...args) => String.raw(t, ...args);
 const pluginId = PL.id;
 
 function main() {
-  const root = ReactDOM.createRoot(document.getElementById("app")!);
-
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-
   function createModel() {
     return {
       show() {
@@ -115,7 +106,6 @@ function main() {
   });
 
   SETTINGS.init();
-  logseq.showSettingsUI();
 }
 
 logseq.ready(main).catch(console.error);

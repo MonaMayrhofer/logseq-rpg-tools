@@ -1,5 +1,7 @@
 :root {
   --rpg-inline-background-color: var(--ls-secondary-background-color);
+  --rpg-event-bg: var(--ls-tertiary-background-color);
+  --rpg-event-bg-hover: var(--ls-selection-background-color);
 }
 
 .rpg-calendar--inline-container {
@@ -44,14 +46,6 @@
   text-align: center;
   padding: 0.24em;
 }
-.rpg-calendar--day {
-  flex: 1 1 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.24em;
-  border-right: 1px solid;
-}
 .rpg-calendar--day:last-of-type {
   border-right: none;
 }
@@ -71,4 +65,29 @@
   vertical-align: middle;
   line-height: 1.4em;
   border-radius: 1em;
+}
+.rpg-calendar--day {
+  flex: 1 1 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.24em;
+  border-right: 1px solid;
+  overflow: hidden;
+}
+
+.rpg-calendar--event {
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  padding: 0px 2px 0px 4px;
+  border-radius: 2px;
+  background-color: var(--rpg-event-bg);
+  cursor: pointer;
+}
+
+.rpg-calendar--event:hover {
+  background-color: var(--rpg-event-bg-hover);
 }
