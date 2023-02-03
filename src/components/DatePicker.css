@@ -1,0 +1,14 @@
+.rpg-date--datepicker-form > input {
+  color: white;
+  background-color: var(--background);
+  border: none;
+  border-bottom: 2px solid var(--light-background);
+  padding: 8px;
+  font-size: large;
+}
+
+.rpg-date--datepicker-preview {
+  margin-top: 12px;
+  text-align: center;
+  font-size: large;
+}

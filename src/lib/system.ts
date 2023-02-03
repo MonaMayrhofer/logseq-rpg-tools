@@ -1,4 +1,4 @@
-import { DateFormatter } from "./lib/format";
+import { DateFormatter } from "./format";
 
 // This describes one Year within the Period (Each year within a period can have a different amount of days)
 export type YearInPeriodSystemDescriptor = {
@@ -52,6 +52,21 @@ export class CalendarSystem {
     }
 
     return new CalendarDate(days);
+  }
+
+  parse(raw: string): CalendarDate | undefined {
+    const parts = raw.split(".");
+    if (parts.length === 3) {
+      try {
+        const d = parseInt(parts[0]);
+        const m = parseInt(parts[1]);
+        const y = parseInt(parts[2]);
+        return this.fromDMY(d, m, y);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    return undefined;
   }
 }
 

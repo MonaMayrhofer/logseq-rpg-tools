@@ -4,7 +4,7 @@ import {
   CalendarDisplay,
   CalendarDisplayProps,
 } from "../components/CalendarDisplay";
-import { CalendarDate, CalendarSystem } from "../system";
+import { CalendarDate, CalendarSystem } from "../lib/system";
 
 type CalendarStoryProps = Pick<CalendarDisplayProps, "system">;
 

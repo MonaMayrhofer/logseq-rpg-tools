@@ -17,7 +17,7 @@ async function fetchEvents<T>(q: DbQuery): Promise<T[]> {
 type DbQueryResult<T> =
   | {
       loading: true;
-      data: undefined;
+      data: undefined | T[];
     }
   | {
       loading: false;
@@ -55,7 +55,7 @@ export function useDbQuery<T>(query: DbQuery): DbQueryResult<T> {
   if (loading) {
     return {
       loading: true,
-      data: undefined,
+      data: events,
     };
   } else {
     return {

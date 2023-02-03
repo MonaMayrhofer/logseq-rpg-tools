@@ -7,10 +7,12 @@ import * as ReactDOM from "react-dom/client";
 import { logseq as PL } from "../package.json";
 import { InlineCalendarView } from "./components/macros/InlineCalendarView";
 import LsStyle from "./ls-style.css?inline";
-import { CalendarDate, CalendarSystem } from "./system";
+import { CalendarDate, CalendarSystem } from "./lib/system";
 import { TMP_SYSTEM_DESCRIPTOR } from "./tmpSystem";
 import { LongFormat } from "./lib/format";
 import { SETTINGS } from "./lib/settings";
+import { DatePicker } from "./components/DatePicker";
+import { showDatePicker } from "./components/Modal";
 
 // @ts-expect-error
 const css = (t, ...args) => String.raw(t, ...args);
@@ -18,6 +20,14 @@ const css = (t, ...args) => String.raw(t, ...args);
 const pluginId = PL.id;
 
 function main() {
+  //Idk if this works? but i wanna include the theme...
+  const customCSSLink = document.createElement("link");
+  customCSSLink.id = "logseq-main-styles";
+  customCSSLink.rel = "stylesheet";
+  customCSSLink.media = "all";
+  customCSSLink.href = "./css/style.css";
+  document.head.append(customCSSLink);
+
   function createModel() {
     return {
       show() {
@@ -28,7 +38,12 @@ function main() {
 
   logseq.provideModel(createModel());
   logseq.setMainUIInlineStyle({
-    zIndex: 11,
+    zIndex: 100,
+    userSelect: "none",
+    position: "fixed",
+    inset: 0,
+    // @ts-ignore
+    WebkitAppRegion: "drag",
   });
 
   const openIconName = "template-plugin-open";
@@ -89,7 +104,7 @@ function main() {
       const [dateNum] = args;
 
       const formatted = new CalendarDate(parseInt(dateNum)).format(
-        new CalendarSystem(TMP_SYSTEM_DESCRIPTOR),
+        SETTINGS.getMasterCalendarSystem(),
         LongFormat
       );
 
@@ -103,6 +118,10 @@ function main() {
     } else {
       return;
     }
+  });
+
+  logseq.Editor.registerSlashCommand("RpgDate", async (it) => {
+    showDatePicker();
   });
 
   SETTINGS.init();

@@ -1,4 +1,4 @@
-import { CalendarDate, CalendarSystem } from "../system";
+import { CalendarDate, CalendarSystem } from "./system";
 
 export type DateFormatter = (
   date: CalendarDate,

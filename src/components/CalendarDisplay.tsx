@@ -2,7 +2,7 @@ import React from "react";
 import { FunctionComponent } from "react";
 import { useCalendarGrid } from "../hooks/calendarGrid";
 import { LongFormat } from "../lib/format";
-import { CalendarDate, CalendarSystem } from "../system";
+import { CalendarDate, CalendarSystem } from "../lib/system";
 
 export type CalendarDisplayProps = {
   system: CalendarSystem;

@@ -1,0 +1,40 @@
+:root {
+  /* Yughh.. this is nasty... i ... cant inherti the base theme? Because of iframe? Yoiks*/
+  --background: #282a36;
+  --light-background: #343746;
+  --lighter-background: #424450;
+  --dark-background: #21222c;
+  --darker-background: #191a21;
+  --foreground: #f8f8f2;
+  --current-line: #44475a;
+  --comment: #6272a4;
+  --white: var(--foreground);
+  --white-hover: #f8f8f280;
+  --red: #ff5555;
+  --orange: #ffb86c;
+  --yellow: #f1fa8c;
+  --green: #50fa7b;
+  --purple: #bd93f9;
+  --purple-hover: #bf93f980;
+  --cyan: #8be9fd;
+  --cyan-hover: #8be9fd80;
+  --pink: #ff79c6;
+  --pink-hover: #ff79c680;
+}
+
+.rpg-calendar--modal-wrapper {
+  z-index: 5000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #282a3690;
+}
+.rpg-calendar--modal {
+  background-color: var(--lighter-background);
+  box-shadow: 0 0 20px -10px black;
+  padding: 24px;
+  border-radius: 12px;
+  color: var(--foreground);
+  font-family: sans-serif;
+}

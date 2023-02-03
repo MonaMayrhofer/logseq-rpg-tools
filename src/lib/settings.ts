@@ -1,4 +1,4 @@
-import { CalendarSystem, CalendarSystemDescriptor } from "../system";
+import { CalendarSystem, CalendarSystemDescriptor } from "./system";
 import { TMP_SYSTEM_DESCRIPTOR } from "../tmpSystem";
 
 type SettingsSchema = {

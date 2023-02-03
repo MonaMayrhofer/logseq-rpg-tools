@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { FunctionComponent } from "react";
 import { useCalendarSystem } from "../../hooks/useCalendarSystem";
 import { DbQuery, useDbQuery } from "../../hooks/useDbQuery";
-import { CalendarDate } from "../../system";
+import { CalendarDate } from "../../lib/system";
 import {
   CalendarDisplay,
   CalendarEvent,

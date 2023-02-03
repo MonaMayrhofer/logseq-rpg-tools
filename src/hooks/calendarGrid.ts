@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { CalendarDate, CalendarSystem } from "../system";
+import { CalendarDate, CalendarSystem } from "../lib/system";
 
 function buildCalendarGrid(system: CalendarSystem, date: CalendarDate) {
   const weekLength = system.descriptor.dayNames.length;

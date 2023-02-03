@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FunctionComponent } from "react";
 import { CalendarDisplay } from "./components/CalendarDisplay";
-import { CalendarDate, CalendarSystem } from "./system";
+import { CalendarDate, CalendarSystem } from "./lib/system";
 
 type FunctionComponentProps = {
   system: CalendarSystem;

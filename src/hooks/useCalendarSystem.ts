@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { SETTINGS } from "../lib/settings";
-import { CalendarSystem, CalendarSystemDescriptor } from "../system";
+import { CalendarSystem, CalendarSystemDescriptor } from "../lib/system";
 
 //TODO Ideally all the systemDescriptors would be cached and stuff... i guess....
 export function useCalendarSystem(): CalendarSystem | undefined {

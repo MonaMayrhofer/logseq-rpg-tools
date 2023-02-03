@@ -4,7 +4,7 @@ import {
   CalendarDisplay,
   CalendarDisplayProps,
 } from "../components/CalendarDisplay";
-import { CalendarDate, CalendarSystem } from "../system";
+import { CalendarDate, CalendarSystem } from "../lib/system";
 import { InlineCalendarView } from "../components/macros/InlineCalendarView";
 
 export default {
