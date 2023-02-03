@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { Calendar } from "./Calendar";
 import { CalendarSystem } from "./system";
-import { TMP_SYSTEM } from "./tmpSystem";
 import { useAppVisible } from "./utils";
 
 function App() {
@@ -18,9 +17,7 @@ function App() {
           }
         }}
       >
-        <div ref={innerRef} className="text-size-2em">
-          <Calendar system={TMP_SYSTEM}></Calendar>
-        </div>
+        <div ref={innerRef} className="text-size-2em"></div>
       </main>
     );
   }

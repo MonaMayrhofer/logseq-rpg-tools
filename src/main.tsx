@@ -8,9 +8,10 @@ import App from "./App";
 import { logseq as PL } from "../package.json";
 import { InlineCalendarView } from "./components/macros/InlineCalendarView";
 import LsStyle from "./ls-style.css?inline";
-import { CalendarDate } from "./system";
-import { TMP_SYSTEM } from "./tmpSystem";
+import { CalendarDate, CalendarSystem } from "./system";
+import { TMP_SYSTEM_DESCRIPTOR } from "./tmpSystem";
 import { LongFormat } from "./lib/format";
+import { SETTINGS } from "./lib/settings";
 
 // @ts-expect-error
 const css = (t, ...args) => String.raw(t, ...args);
@@ -76,19 +77,6 @@ function main() {
         template: `<div id="${id}"></div>`,
       });
 
-      // await logseq.DB.datascriptQuery(
-      //
-      // jio
-      //   `
-      //       [:find (pull ?p [*])
-      //        :where
-      //        [?b :block/page ?p]
-      //        [?p :block/journal? true]
-      //        [?p :block/journal-day ?d]
-      //        [(>= ?d ${my}01)] [(<= ?d ${my}31)]]
-      //     `
-      // ).then((it) => console.log(it));
-
       setTimeout(() => {
         const element = parent.document.getElementById(id);
 
@@ -105,12 +93,12 @@ function main() {
     } else if (type === "rpg-date") {
       const id = `rpg-date-view-${slot}`;
 
-      console.log("PAYLOAD: ", payload);
+      // console.log("PAYLOAD: ", payload);
 
       const [dateNum] = args;
 
       const formatted = new CalendarDate(parseInt(dateNum)).format(
-        TMP_SYSTEM,
+        new CalendarSystem(TMP_SYSTEM_DESCRIPTOR),
         LongFormat
       );
 
@@ -125,6 +113,9 @@ function main() {
       return;
     }
   });
+
+  SETTINGS.init();
+  logseq.showSettingsUI();
 }
 
 logseq.ready(main).catch(console.error);

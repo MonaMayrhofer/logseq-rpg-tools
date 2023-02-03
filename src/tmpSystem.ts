@@ -1,6 +1,4 @@
-import { CalendarSystem } from "./system";
-
-export const TMP_SYSTEM: CalendarSystem = new CalendarSystem({
+export const TMP_SYSTEM_DESCRIPTOR = {
   name: "test-system",
   dayNames: ["Mond", "Tues", "Wednes", "Thurs", "Frid", "Satd", "Sund"],
   monthNames: [
@@ -23,4 +21,4 @@ export const TMP_SYSTEM: CalendarSystem = new CalendarSystem({
       },
     ],
   },
-});
+};
