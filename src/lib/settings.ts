@@ -1,9 +1,14 @@
-import { CalendarSystem, CalendarSystemDescriptor } from "./system";
+import {
+  CalendarDate,
+  CalendarSystem,
+  CalendarSystemDescriptor,
+} from "./system";
 import { TMP_SYSTEM_DESCRIPTOR } from "../tmpSystem";
 
 type SettingsSchema = {
   calendarSystems: Record<string, CalendarSystemDescriptor>;
   masterCalendar: string;
+  currentDate: number;
   disabled: boolean;
 };
 
@@ -41,8 +46,18 @@ function setupLogseqSettingsSchema() {
       title: "Master Calendar",
       type: "string",
     },
+    {
+      default: "example",
+      description:
+        "The current Date, used to calculate how long ago things were.",
+      key: "currentDate",
+      title: "Current Date",
+      type: "number",
+    },
   ]);
 }
+
+//TODO This could be a zustand store
 
 class RpgCalendarSettings {
   initialized: boolean;
@@ -51,10 +66,13 @@ class RpgCalendarSettings {
 
   masterSystem: string;
 
+  currentDate: CalendarDate;
+
   constructor() {
     this.initialized = false;
     this.systems = {};
     this.masterSystem = "";
+    this.currentDate = new CalendarDate(0);
   }
 
   init() {
@@ -72,6 +90,7 @@ class RpgCalendarSettings {
   parseSettings(settings: Partial<SettingsSchema>) {
     this.systems = parseCalendarSystems(settings);
     this.masterSystem = settings.masterCalendar || "";
+    this.currentDate = new CalendarDate(settings.currentDate || 0);
     console.log("Parsed Settings: ", this);
   }
 
@@ -81,6 +100,28 @@ class RpgCalendarSettings {
 
   getMasterCalendarSystem(): CalendarSystem | undefined {
     return this.getCalendarSystem(this.masterSystem);
+  }
+
+  setCurrentDate(date: CalendarDate) {
+    logseq.updateSettings({
+      currentDate: date.date,
+    });
+  }
+
+  getCurrentDate() {
+    return this.currentDate;
+  }
+
+  subscribeCurrentDate(callback: (date: CalendarDate) => void) {
+    logseq.onSettingsChanged((settings, newSettings) => {
+      const newDate = new CalendarDate(newSettings.currentDate);
+      if (newDate.date !== this.currentDate.date) {
+        this.currentDate = newDate;
+        callback(this.currentDate);
+      }
+    });
+    callback(this.currentDate);
+    //TODO This MUST return an unsubscriber!!!
   }
 }
 

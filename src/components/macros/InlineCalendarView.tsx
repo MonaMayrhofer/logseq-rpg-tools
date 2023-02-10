@@ -4,12 +4,7 @@ import { FunctionComponent } from "react";
 import { useCalendarSystem } from "../../hooks/useCalendarSystem";
 import { DbQuery, useDbQuery } from "../../hooks/useDbQuery";
 import { CalendarDate } from "../../lib/system";
-import {
-  CalendarDisplay,
-  CalendarEvent,
-  EventClickData,
-  Events,
-} from "../CalendarDisplay";
+import { CalendarDisplay, CalendarEvent, Events } from "../CalendarDisplay";
 
 const EVENTS_QUERY: DbQuery = {
   query: `

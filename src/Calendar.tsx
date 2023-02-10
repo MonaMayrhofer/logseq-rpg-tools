@@ -16,6 +16,8 @@ export const Calendar: FunctionComponent<FunctionComponentProps> = ({
       system={system}
       date={date}
       onDateChange={(d) => setDate(d)}
+      events={[]}
+      onEventClick={(it) => console.log(it)}
     ></CalendarDisplay>
   );
 };

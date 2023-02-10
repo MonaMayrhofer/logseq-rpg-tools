@@ -51,6 +51,8 @@ export class CalendarSystem {
       days += period.monthDurations[m];
     }
 
+    days += day;
+
     return new CalendarDate(days);
   }
 
@@ -61,7 +63,8 @@ export class CalendarSystem {
         const d = parseInt(parts[0]);
         const m = parseInt(parts[1]);
         const y = parseInt(parts[2]);
-        return this.fromDMY(d, m, y);
+        console.log("Parsed: ", raw, d, m, y);
+        return this.fromDMY(d - 1, m - 1, y);
       } catch (e) {
         console.log(e);
       }
@@ -70,7 +73,33 @@ export class CalendarSystem {
   }
 }
 
+type DurationParts = {
+  years: number;
+  months: number;
+  // days: number;
+};
+
 export class CalendarDate {
+  since(system: CalendarSystem, otherDate: CalendarDate): DurationParts {
+    const myParts = this.deconstruct(system);
+    const otherParts = otherDate.deconstruct(system);
+    const ret = {
+      years: myParts.year - otherParts.year,
+      months: myParts.month - otherParts.month,
+    };
+
+    if (ret.months < 0) {
+      ret.months += system.descriptor.monthNames.length;
+      ret.years -= 1;
+    }
+
+    ///   [          ] [  I       ]
+    /// - [          ] [      I   ]
+
+    ///   [          ] [  I       ]
+    /// - [       I  ] [          ]
+    return ret;
+  }
   date: number;
 
   constructor(date: number) {

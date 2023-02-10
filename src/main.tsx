@@ -20,6 +20,7 @@ const css = (t, ...args) => String.raw(t, ...args);
 const pluginId = PL.id;
 
 function main() {
+  SETTINGS.init();
   //Idk if this works? but i wanna include the theme...
   const customCSSLink = document.createElement("link");
   customCSSLink.id = "logseq-main-styles";
@@ -32,6 +33,19 @@ function main() {
     return {
       show() {
         logseq.showMainUI();
+      },
+      updateCurrentDate() {
+        showDatePicker({
+          onDatePicked: (date: CalendarDate) => {
+            SETTINGS.setCurrentDate(date);
+            logseq.UI.showMsg(
+              `Set current date to ${date.format(
+                SETTINGS.getMasterCalendarSystem() as CalendarSystem,
+                LongFormat
+              )}`
+            );
+          },
+        });
       },
     };
   }
@@ -61,10 +75,17 @@ function main() {
     }
   `);
 
+  //Current date display
+
   logseq.App.registerUIItem("toolbar", {
-    key: openIconName,
+    key: "rpg-current-date-display",
     template: `
-      <div data-on-click="show" class="${openIconName}">⚙️</div>
+      <div>
+      <div id="rpg-current-date-display" data-on-click="updateCurrentDate" class="rpg-calendar--date-view">${SETTINGS.getCurrentDate().format(
+        SETTINGS.getMasterCalendarSystem() as CalendarSystem,
+        LongFormat
+      )}</div>
+      </div>
     `,
   });
 
@@ -103,16 +124,21 @@ function main() {
 
       const [dateNum] = args;
 
-      const formatted = new CalendarDate(parseInt(dateNum)).format(
-        SETTINGS.getMasterCalendarSystem(),
-        LongFormat
-      );
+      const system = SETTINGS.getMasterCalendarSystem();
+      let formatted = "Error in RPGDate";
+      let ago = "Long Ago";
+      if (system !== undefined) {
+        const date = new CalendarDate(parseInt(dateNum));
+        formatted = date.format(system, LongFormat);
+        const since = SETTINGS.getCurrentDate().since(system, date);
+        ago = `${since.years}y and ${since.months}m ago`;
+      }
 
       logseq.provideUI({
         key: `rpg-calendar-${slot}`,
         slot,
         reset: true,
-        template: `<div class="rpg-calendar--date-view" id="${id}">${formatted}</div>`,
+        template: `<div class="rpg-calendar--date-view" id="${id}" title="${ago}">${formatted}</div>`,
       });
       return;
     } else {
@@ -121,10 +147,14 @@ function main() {
   });
 
   logseq.Editor.registerSlashCommand("RpgDate", async (it) => {
-    showDatePicker();
+    showDatePicker({
+      onDatePicked: (date) => {
+        logseq.Editor.insertAtEditingCursor(`{{tgs ${date?.date}}}`).then(
+          (it) => console.log("OK")
+        );
+      },
+    });
   });
-
-  SETTINGS.init();
 }
 
 logseq.ready(main).catch(console.error);

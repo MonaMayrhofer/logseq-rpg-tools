@@ -7,9 +7,16 @@ import { useState } from "react";
 import { useMemo } from "react";
 import { SETTINGS } from "../lib/settings";
 import { LongFormat } from "../lib/format";
+import { CalendarDate } from "../lib/system";
 
-type DatePickerProps = object;
-export const DatePicker: FunctionComponent<DatePickerProps> = () => {
+export type OnDatePickedHandler = (date: CalendarDate) => void;
+
+type DatePickerProps = {
+  onDatePicked: OnDatePickedHandler;
+};
+export const DatePicker: FunctionComponent<DatePickerProps> = ({
+  onDatePicked,
+}) => {
   const [text, setText] = useState("");
   const system = SETTINGS.getMasterCalendarSystem();
 
@@ -22,9 +29,10 @@ export const DatePicker: FunctionComponent<DatePickerProps> = () => {
     e.preventDefault();
     if (parsed) {
       console.log("INSERT DATE");
-      logseq.Editor.insertAtEditingCursor(`{{tgs ${parsed?.date}}}`).then(
-        (it) => console.log("OK")
-      );
+      // logseq.Editor.insertAtEditingCursor(`{{tgs ${parsed?.date}}}`).then(
+      //   (it) => console.log("OK")
+      // );
+      onDatePicked(parsed);
     }
     closeCurrentApp();
   };

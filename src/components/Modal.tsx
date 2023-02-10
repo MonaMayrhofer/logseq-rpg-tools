@@ -1,7 +1,7 @@
 import React, { FunctionComponent, MouseEventHandler, ReactNode } from "react";
 import { KeyboardEventHandler } from "react";
 import * as ReactDOM from "react-dom/client";
-import { DatePicker } from "./DatePicker";
+import { DatePicker, OnDatePickedHandler } from "./DatePicker";
 import "./Modal.css";
 
 let currentApp: ReactDOM.Root | undefined = undefined;
@@ -61,7 +61,10 @@ export const ModalWrapper: FunctionComponent<ModalWrapperProps> = ({
   );
 };
 
-export function showDatePicker() {
+type ShowDatePickerProps = {
+  onDatePicked: OnDatePickedHandler;
+};
+export function showDatePicker(props: ShowDatePickerProps) {
   closeCurrentApp();
   const rootElem = document.getElementById("app");
   if (rootElem == undefined) {
@@ -81,7 +84,7 @@ export function showDatePicker() {
   currentApp = root;
   root.render(
     <ModalWrapper>
-      <DatePicker></DatePicker>
+      <DatePicker onDatePicked={props.onDatePicked}></DatePicker>
     </ModalWrapper>
   );
   console.log("Hii");
