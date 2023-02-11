@@ -150,6 +150,11 @@ export class CalendarDate {
     return system.fromDMY(0, date.month, date.year);
   }
 
+  addYears(system: CalendarSystem, years: number): CalendarDate {
+    const date = this.deconstruct(system);
+    //TODO This crashes if we switch to a year that has less days in the month than the current day is day of month.
+    return system.fromDMY(date.dayOfMonth, date.month, date.year + years);
+  }
   addMonths(system: CalendarSystem, months: number): CalendarDate {
     const date = this.deconstruct(system);
 

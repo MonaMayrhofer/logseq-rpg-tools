@@ -131,7 +131,14 @@ function main() {
         const date = new CalendarDate(parseInt(dateNum));
         formatted = date.format(system, LongFormat);
         const since = SETTINGS.getCurrentDate().since(system, date);
+        const days = SETTINGS.getCurrentDate().date - date.date;
         ago = `${since.years}y and ${since.months}m ago`;
+
+        const weeks = Math.floor(days / 7);
+        const weeksAndDays = Math.floor(days % 7);
+        if (weeks < 25) {
+          ago += ` (${weeks}w and ${weeksAndDays}days)`;
+        }
       }
 
       logseq.provideUI({
