@@ -65,6 +65,7 @@
   vertical-align: middle;
   line-height: 1.4em;
   border-radius: 1em;
+  font-size: medium;
 }
 .rpg-calendar--day {
   flex: 1 1 0px;

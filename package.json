@@ -4,7 +4,7 @@
   "main": "dist/index.html",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && cp Readme.md LICENSE package.json dist/",
     "preinstall": "npx only-allow pnpm",
     "storybook": "concurrently \"npm run watch:*\"",
     "build-storybook": "build-storybook",
